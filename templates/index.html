@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TryDevPI - The Tryton Development Package Index</title>
+    </head>
+    <body>
+        {% for name, url in urls.iteritems() %}
+        <a href="{{ url }}">{{ name }}</a>
+        {% endfor %}
+    </body>
+</html>
