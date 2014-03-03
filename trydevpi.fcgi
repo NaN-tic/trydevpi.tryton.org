@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from flup.server.fcgi import WSGIServer
-from trydevpy import app
+from trydevpi import app
 from werkzeug.contrib.fixers import LighttpdCGIRootFix
 
 if __name__ == '__main__':
