@@ -73,11 +73,11 @@ def get_branch(major, minor):
 
 def get_url(name, branch, version):
     if name.startswith('trytond_'):
-        base = BASE_MODULE_URL
+        url = BASE_MODULE_URL + name[len('trytond_'):]
     else:
-        base = BASE_URL
-    return '%(base)s%(name)s@%(branch)s#egg=%(name)s-%(version)s' % {
-        'base': base,
+        url = BASE_URL + name
+    return '%(url)s@%(branch)s#egg=%(name)s-%(version)s' % {
+        'url': url,
         'name': name,
         'branch': branch,
         'version': version,
