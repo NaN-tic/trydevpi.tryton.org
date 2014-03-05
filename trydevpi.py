@@ -11,7 +11,7 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 app.config.from_envvar('TRYDEVPI_SETTINGS', silent=True)
 
 
-def get_urls():
+def get_urls(branch_filter=None):
     urls = {}
     lui = ui.ui()
     lui.readconfig(app.config['HG_CONFIG'], trust=True)
@@ -39,7 +39,8 @@ def get_urls():
             bug += 1
             version = get_version(major, minor, bug)
             branch = get_branch(major, minor)
-            if not repo.branchheads(branch):
+            if (not repo.branchheads(branch)
+                    or (branch_filter and branch != branch_filter)):
                 continue
             url = get_url(package, branch, version)
             urls['%s-%s' % (package, version)] = url
@@ -85,9 +86,11 @@ def get_url(name, branch, version):
 
 
 @app.route('/')
+@app.route('/<branch>')
 @cache.cached(timeout=2 * 60 * 60)
-def index():
-    return render_template('index.html', urls=get_urls())
+def index(branch=None):
+    return render_template('index.html', urls=get_urls(branch))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
