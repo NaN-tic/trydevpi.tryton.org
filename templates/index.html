@@ -4,7 +4,7 @@
         <title>TryDevPI - The Tryton Development Package Index</title>
     </head>
     <body>
-        {% for name, url in urls.iteritems() %}
+        {% for name, url in urls|dictsort %}
         <a href="{{ url }}">{{ name }}</a><br/>
         {% endfor %}
     </body>
