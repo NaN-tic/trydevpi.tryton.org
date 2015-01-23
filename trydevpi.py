@@ -3,8 +3,8 @@ from flask.ext.cache import Cache
 from mercurial import ui, hg
 from mercurial.hgweb.hgwebdir_mod import findrepos
 
-BASE_URL = 'hg+http://hg.tryton.org/'
-BASE_MODULE_URL = 'hg+http://hg.tryton.org/modules/'
+BASE_URL = 'hg+https://hg.tryton.org/'
+BASE_MODULE_URL = 'hg+https://hg.tryton.org/modules/'
 
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
