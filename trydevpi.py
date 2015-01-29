@@ -16,6 +16,8 @@ def get_urls(branch_filter=None):
     lui = ui.ui()
     lui.readconfig(app.config['HG_CONFIG'], trust=True)
     paths = lui.configitems('paths')
+    new_packages = []
+    last_series = None
     for name, path in findrepos(paths):
         if (name not in ('trytond', 'proteus', 'tryton')
                 and not name.startswith('modules/')):
@@ -34,16 +36,25 @@ def get_urls(branch_filter=None):
                 max_version = key
             if last_major.get(key, -1) < bug:
                 last_major[key] = bug
+        if max_version == (-1, -1):
+            new_packages.append(package)
+            continue
         last_major[max_version[0], max_version[1] + 1] = -1
         for (major, minor), bug in last_major.iteritems():
             bug += 1
             version = get_version(major, minor, bug)
+            last_series = max(last_series, (major, minor, bug))
             branch = get_branch(major, minor)
             if (not repo.branchheads(branch)
                     or (branch_filter and branch != branch_filter)):
                 continue
             url = get_url(package, branch, version)
             urls['%s-%s' % (package, version)] = url
+    for package in new_packages:
+        version = get_version(*last_series)
+        branch = get_branch(*last_series[:2])
+        url = get_url(package, branch, version)
+        urls['%s-%s' % (package, version)] = url
     return urls
 
 
